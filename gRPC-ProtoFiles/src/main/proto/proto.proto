@@ -1,0 +1,127 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.example.grpc;
+
+message Animal {
+  int64 registrationNo = 1;
+  AnimalType animalType = 2;
+  int32 weight = 3;
+  string origin = 4;
+  int64 arrival = 5;
+}
+
+message AnimalAllRequest {
+  string origin = 1;
+  string date = 2;
+}
+
+message AnimalOneRequest {
+  int64 id = 1;
+}
+
+message AnimalAllResponse {
+  repeated Animal animals = 1;
+}
+
+message AnimalPart {
+  int64 id = 1;
+  Animal animal = 2;
+  AnimalPartType animalPartType= 3;
+  int32 weight = 4;
+}
+
+message AnimalPartAllRequest {}
+
+message AnimalPartOneRequest {
+  int64 id = 1;
+}
+
+message AnimalPartAllResponse {
+  repeated AnimalPart animalParts= 1;
+}
+
+message Tray {
+  int64 id = 1;
+  int32 maxWeight = 2;
+  AnimalPartType animalPartType = 3;
+  repeated AnimalPart animalParts = 4;
+}
+
+message TrayAllRequest {}
+
+message TrayOneRequest {
+  int64 id = 1;
+}
+
+message TrayAllResponse {
+  repeated Tray trays = 1;
+}
+
+message Package {
+  int64 packageId =1;
+  repeated Tray fromTrays = 2;
+}
+
+message PackageAllRequest {}
+
+message PackageOneRequest {
+  int64 id = 1;
+}
+
+message PackageAllResponse {
+  repeated Package package = 1;
+}
+
+message AllAnimalsFromPackageRequest {
+  int64 packageId = 1;
+}
+
+message AllAnimalsFromPackageResponse {
+  repeated Animal animals = 1;
+}
+
+message AllPackagesWithAnimalRequest {
+  int64 animalId = 1;
+}
+
+message AllPackagesWithAnimalResponse {
+  repeated Package packages = 1;
+}
+enum AnimalPartType {
+  LEG = 0;
+  LIVER = 1;
+}
+
+enum AnimalType {
+    COW = 0;
+    PIG = 1;
+    CHICKEN = 2;
+}
+
+service AnimalService {
+  rpc create(Animal) returns (Animal);
+  rpc getAll(AnimalAllRequest) returns (AnimalAllResponse);
+  rpc getOne(AnimalOneRequest) returns (Animal);
+  rpc getAllFromPackage(AllAnimalsFromPackageRequest) returns (AllAnimalsFromPackageResponse);
+
+}
+
+service AnimalPartService {
+  rpc create(AnimalPart) returns (AnimalPart);
+  rpc getAll(AnimalPartAllRequest) returns (AnimalPartAllResponse);
+  rpc getOne(AnimalPartOneRequest) returns (AnimalPart);
+}
+
+service TrayService {
+  rpc create(Tray) returns (Tray);
+  rpc getAll(TrayAllRequest) returns (TrayAllResponse);
+  rpc getOne(TrayOneRequest) returns (Tray);
+}
+
+service PackageService {
+  rpc create(Package) returns (Package);
+  rpc getAll(PackageAllRequest) returns (PackageAllResponse);
+  rpc getOne(PackageOneRequest) returns (Package);
+  rpc getAllWithAnimal(AllPackagesWithAnimalRequest) returns (AllPackagesWithAnimalResponse);
+}
