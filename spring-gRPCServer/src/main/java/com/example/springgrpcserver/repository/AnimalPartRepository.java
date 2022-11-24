@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AnimalPartRepository extends JpaRepository<AnimalPartEntity, Long> {
-	@Query(value = "select * from animal_part_entity where animal_entity_registration_no = :AnimalId",
+	@Query(value = "select * from animal_part_entity where animal_entity_registration_no = :animalId",
 			nativeQuery = true) List<AnimalPartEntity> findAllFromAnimal(@Param("animalId") long animalId);
 
 	@Query(value = "select * from animal_part_entity where animal_part_entity.id = "
